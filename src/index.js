@@ -72,9 +72,15 @@ function generateArray(e) {
         case "date":
             results = generateDateArray(arrayLength, steps);
             break;
+        case "integer":
+            results = generateNumberArray(arrayLength, steps, true);
+            break;
+        case "float":
+            results = generateNumberArray(arrayLength, steps, false);
+            break;
     }
 
-    results = createLanguageSpecificArrayString(language, results);
+    results = createLanguageSpecificArrayString(language, results, datatype);
 
     $("#result-array").val(results);
 
@@ -96,38 +102,38 @@ function generateArray(e) {
 /****************************************************************************************
  * Generate an array of random strings with the passed properties
  * @param {number} length the length of the output array
- * @param {number} categoriesNumber number of different categories in this array
+ * @param {number} numOfDifferentValues number of different categories in this array
  */
-function generateStringArray(length, categoriesNumber) {
-    let base = randomWords(categoriesNumber);
+function generateStringArray(length, numOfDifferentValues) {
+    let base = randomWords(numOfDifferentValues);
 
     let resultArray = new Array(length);
     for (let i = 0; i < resultArray.length; i++) {
-        let randIndex = Math.floor(Math.random() * categoriesNumber)
+        let randIndex = Math.floor(Math.random() * numOfDifferentValues)
         resultArray[i] = '"' + base[randIndex] + '"';
     }
     return resultArray;
 }
 
 
-/**
+/****************************************************************************************
  * Generate an array of random dates with the passed properties
  * @param {number} length the length of the output array
- * @param {number} datesNumber number of different dates in this array. If it is -1 then all dates will be random
+ * @param {number} numOfDifferentValues number of different dates in this array. If it is -1 then all dates will be random
  */
-function generateDateArray(length, datesNumber) {
+function generateDateArray(length, numOfDifferentValues) {
     let baseDates = [];
     let startDate = new Date(2015, 0, 1);
     let endDate = new Date();
     let resultArray = new Array(length);
 
-    if (datesNumber !== -1) {
-        baseDates = new Array(datesNumber);
+    if (numOfDifferentValues !== -1) {
+        baseDates = new Array(numOfDifferentValues);
         for (let i = 0; i < baseDates.length; i++)
             baseDates[i] = randomDate(startDate, endDate);
 
         for (let i = 0; i < resultArray.length; i++) {
-            let randIndex = Math.floor(Math.random() * datesNumber)
+            let randIndex = Math.floor(Math.random() * numOfDifferentValues)
             resultArray[i] = '"' + baseDates[randIndex].toISOString() + '"';
         }
     }
@@ -142,13 +148,61 @@ function generateDateArray(length, datesNumber) {
 }
 
 
-/**
+/****************************************************************************************
  * SOURCE: https://stackoverflow.com/a/9035732
  * @param {object} start starting date object
  * @param {object} end ending date object
  */
 function randomDate(start, end) {
     return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
+}
+
+
+/****************************************************************************************
+ * Generate an array of random numbers with the passed properties
+ * @param {number} length the length of the output array
+ * @param {number} numOfDifferentValues number of different dates in this array. If it is -1 then all dates will be random
+ * @param {boolean} isInteger generate only integers
+ */
+function generateNumberArray(length, numOfDifferentValues, isInteger) {
+    let baseNumbers = [];
+    let min = 0;
+    let max = 1000;
+    let resultArray = new Array(length);
+
+    if (numOfDifferentValues !== -1) {
+        baseNumbers = new Array(numOfDifferentValues);
+        for (let i = 0; i < baseNumbers.length; i++) {
+            baseNumbers[i] = randNumInRange(min, max);
+            if (isInteger)
+                baseNumbers[i] = Math.round(baseNumbers[i]);
+        }
+
+        for (let i = 0; i < resultArray.length; i++) {
+            let randIndex = Math.floor(Math.random() * numOfDifferentValues)
+            resultArray[i] = baseNumbers[randIndex];
+        }
+    }
+    else {
+        for (let i = 0; i < resultArray.length; i++) {
+            let num = randNumInRange(min, max);
+            if (isInteger)
+                num = Math.round(num);
+            resultArray[i] = num;
+        }
+    }
+
+    return resultArray;
+}
+
+
+/****************************************************************************************
+ * returns a random number in a range
+ * @param {number} min minimum number
+ * @param {number} max maximum number
+ */
+function randNumInRange(min, max) {
+    return Math.random() * (max - min) + min;
 }
 
 
@@ -198,7 +252,7 @@ function createLanguageSpecificArrayString(language, results) {
         }
     }
 
-    if(language === "python" || language === "values")
+    if (language === "python" || language === "values")
         statementEnding = "";
 
     return res = arrayDeclaration + brackets.open + results.join(", ") + brackets.close + statementEnding;
