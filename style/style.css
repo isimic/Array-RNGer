@@ -98,8 +98,31 @@ div.content {
     border: 1px solid #ccc;
 }
 
+#number-range-row {
+    text-align: right;
+}
+
+#main-container .input-column .range-separator,
+#number-from,
+#number-to {
+    float: none !important;
+}
+
 #main-container .input-column input {
     text-align: right;
+}
+
+#number-from::-webkit-inner-spin-button, 
+#number-from::-webkit-outer-spin-button,
+#number-to::-webkit-inner-spin-button, 
+#number-to::-webkit-outer-spin-button {
+    -webkit-appearance: none; 
+    margin: 0;
+}
+
+#number-from,
+#number-to {
+    width: 110px;
 }
 
 #main-container .input-column input[type="checkbox"] {

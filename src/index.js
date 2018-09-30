@@ -45,6 +45,11 @@ function checkDataType(e) {
         $("#input-value-type").find("option[value='continuous']").hide();
     else
         $("#input-value-type").find("option[value='continuous']").show();
+
+    if ($(this).val() === "integer" || $(this).val() === "float")
+        $("#number-range-row").show();
+    else
+        $("#number-range-row").hide();
 }
 
 
@@ -60,8 +65,8 @@ function generateArray(e) {
     let valueType = $("#input-value-type").val();
     let steps = $("#num-of-steps").is(":visible") ? parseInt($("#num-of-steps").val()) : -1;
     let toClipboard = $("#directly-to-clipboard").is(":checked");
-
-    console.log("steps: ", steps);
+    let from = parseFloat($("#number-from").val());
+    let to = parseFloat($("#number-to").val());
 
     let results = [];
 
@@ -73,10 +78,10 @@ function generateArray(e) {
             results = generateDateArray(arrayLength, steps);
             break;
         case "integer":
-            results = generateNumberArray(arrayLength, steps, true);
+            results = generateNumberArray(arrayLength, steps, true, from, to);
             break;
         case "float":
-            results = generateNumberArray(arrayLength, steps, false);
+            results = generateNumberArray(arrayLength, steps, false, from, to);
             break;
     }
 
@@ -164,10 +169,8 @@ function randomDate(start, end) {
  * @param {number} numOfDifferentValues number of different dates in this array. If it is -1 then all dates will be random
  * @param {boolean} isInteger generate only integers
  */
-function generateNumberArray(length, numOfDifferentValues, isInteger) {
+function generateNumberArray(length, numOfDifferentValues, isInteger, min, max) {
     let baseNumbers = [];
-    let min = 0;
-    let max = 1000;
     let resultArray = new Array(length);
 
     if (numOfDifferentValues !== -1) {

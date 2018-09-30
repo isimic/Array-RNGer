@@ -2,7 +2,7 @@
 
 <head>
     <script src="./static/bundle.js"></script>
-    <link rel="shortcut icon" type="image/png" href="/favicon.png"/>
+    <link rel="shortcut icon" type="image/png" href="/favicon.png" />
     <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="./style/style.css">
 </head>
@@ -39,6 +39,13 @@
                                 </select>
                             </div>
 
+                            <div class="input-row" id="number-range-row" style="display: none">
+                                <span>Range</span>
+                                <input id="number-from" type="number" value="0" step="1">
+                                <span class="range-separator"> - </span>
+                                <input id="number-to" type="number" value="1000" step="1">
+                            </div>
+
                             <div class="input-row">
                                 <span>Array length</span>
                                 <input id="array-length" type="number" value="100" step="100">
@@ -62,7 +69,6 @@
                                 <input id="directly-to-clipboard" type="checkbox">
                             </div>
 
-
                             <div class="input-row">
                                 <div class="btn btn-primary" id="generate">GENERATE!</div>
                             </div>
@@ -80,7 +86,7 @@
                 <div id="result-container" class="container">
                     <div class="header">Generated Array</div>
                     <div class="result-row">
-                            <textarea name="" id="result-array"></textarea>
+                        <textarea name="" id="result-array"></textarea>
                     </div>
                     <div class="button-row">
                         <div class="btn btn-primary" id="close-results">Close</div>
@@ -92,7 +98,7 @@
         </div>
 
         <div class="row lower">
-           
+
         </div>
     </div>
 </body>
