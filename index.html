@@ -1,0 +1,98 @@
+<html>
+
+<head>
+    <script src="./static/bundle.js"></script>
+    <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./style/style.css">
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="row upper"></div>
+        <div class="row middle">
+            <div class="col-lg-3 col-md-2 side"></div>
+            <div class="col-lg-6 col-md-8 center">
+                <div id="main-container" class="container">
+                    <div class="header">Array RNGer</div>
+                    <div class="content">
+                        <div class="input-column">
+                            <div class="input-row">
+                                <span>Language</span>
+                                <select id="input-language">
+                                    <option value="javascript">JavaScript</option>
+                                    <option value="java">Java</option>
+                                    <option value="python">Python</option>
+                                    <option value="c">C</option>
+                                </select>
+                            </div>
+
+                            <div class="input-row">
+                                <span>Datatype</span>
+                                <select id="input-datatype">
+                                    <option value="string">String</option>
+                                    <option value="date">Date</option>
+                                    <option value="integer">Integer</option>
+                                    <option value="float">Float</option>
+                                </select>
+                            </div>
+
+                            <div class="input-row">
+                                <span>Array length</span>
+                                <input id="array-length" type="number" value="100" step="100">
+                            </div>
+
+                            <div class="input-row">
+                                <span>Value type</span>
+                                <select id="input-value-type">
+                                    <option value="discrete">Discrete</option>
+                                    <option value="continuous">Continuous</option>
+                                </select>
+                            </div>
+
+                            <div class="input-row">
+                                <span>Steps</span>
+                                <input id="num-of-steps" type="number" value="10">
+                            </div>
+
+                            <div class="input-row">
+                                <span>Directly to Clipboard</span>
+                                <input id="directly-to-clipboard" type="checkbox">
+                            </div>
+
+
+                            <div class="input-row">
+                                <div class="btn btn-primary" id="generate">GENERATE!</div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+
+                <div id="toast-container" style="display:none">
+                    <span>
+                        The generated array is now in your clipboard!
+                    </span>
+                </div>
+
+                <div id="result-container" class="container">
+                    <div class="header">Generated Array</div>
+                    <div class="result-row">
+                            <textarea name="" id="result-array"></textarea>
+                    </div>
+                    <div class="button-row">
+                        <div class="btn btn-primary" id="close-results">Close</div>
+                        <div class="btn btn-primary" id="copy-to-clipboard">Copy to Clipboard</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-2 side"></div>
+        </div>
+
+        <div class="row lower">
+           
+        </div>
+    </div>
+</body>
+
+</html>
