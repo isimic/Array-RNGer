@@ -98,24 +98,32 @@ div.content {
     border: 1px solid #ccc;
 }
 
-#number-range-row {
+
+
+
+#number-range-row,
+#date-range-row {
     text-align: right;
 }
 
 #main-container .input-column .range-separator,
 #number-from,
-#number-to {
+#number-to,
+#date-from,
+#date-to {
     float: none !important;
 }
 
-#main-container .input-column input {
-    text-align: right;
+#date-from,
+#date-to {
+    width: 130px;
+    padding: 0;
 }
 
-#number-from::-webkit-inner-spin-button, 
-#number-from::-webkit-outer-spin-button,
-#number-to::-webkit-inner-spin-button, 
-#number-to::-webkit-outer-spin-button {
+
+.remove-spinner::-webkit-inner-spin-button, 
+.remove-spinner::-webkit-outer-spin-button,
+.remove-spinner::-webkit-calendar-picker-indicator {
     -webkit-appearance: none; 
     margin: 0;
 }
@@ -123,6 +131,15 @@ div.content {
 #number-from,
 #number-to {
     width: 110px;
+}
+
+
+
+
+
+
+#main-container .input-column input {
+    text-align: right;
 }
 
 #main-container .input-column input[type="checkbox"] {

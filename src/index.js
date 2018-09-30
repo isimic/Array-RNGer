@@ -50,6 +50,11 @@ function checkDataType(e) {
         $("#number-range-row").show();
     else
         $("#number-range-row").hide();
+
+    if ($(this).val() === "date")
+        $("#date-range-row").show();
+    else
+        $("#date-range-row").hide();
 }
 
 

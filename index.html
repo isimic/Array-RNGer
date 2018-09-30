@@ -41,9 +41,16 @@
 
                             <div class="input-row" id="number-range-row" style="display: none">
                                 <span>Range</span>
-                                <input id="number-from" type="number" value="0" step="1">
+                                <input class="remove-spinner" id="number-from" type="number" value="0" step="1">
                                 <span class="range-separator"> - </span>
-                                <input id="number-to" type="number" value="1000" step="1">
+                                <input class="remove-spinner" id="number-to" type="number" value="1000" step="1">
+                            </div>
+
+                            <div class="input-row" id="date-range-row" style="display: none">
+                                <span>Range</span>
+                                <input class="remove-spinner" id="date-from" type="date" required="required" value="2018-01-01">
+                                <span class="range-separator"> - </span>
+                                <input class="remove-spinner" id="date-to" type="date" required="required" value="2010-01-01">
                             </div>
 
                             <div class="input-row">
