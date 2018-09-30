@@ -1,9 +1,17 @@
 var $ = require("jquery");
+var randomWords = require("random-words"); // https://github.com/punkave/random-words
+
+parent.randomWords = randomWords;
+parent.$ = require("jquery");
 require("jquery-ui-bundle");
 
+
+let _toastTimeoutId = -1;
+
 $(document).ready(function () {
-    $("#generate").on("click", startGeneration);
+    $("#generate").on("click", generateArray);
     $("#input-value-type").on("change", checkValueType);
+    $("#input-datatype").on("change", checkDataType);
     $("#close-results").on("click", function () {
         $("#result-container").hide("slide", {
             direction: "up"
@@ -15,7 +23,11 @@ $(document).ready(function () {
 });
 
 
-function checkValueType() {
+/**
+ * Adapts the UI after the value type has been changed
+ * @param {Object} e event
+ */
+function checkValueType(e) {
     if ($(this).val() === "continuous")
         $("#num-of-steps").prop("disabled", true).parent().hide();
     else
@@ -23,9 +35,20 @@ function checkValueType() {
 }
 
 
-function startGeneration(e) {
-    console.log("start");
+/**
+ * Adapts the UI after the datatype type has been changed
+ * @param {Object} e adatap
+ */
+function checkDataType(e) {
+    if ($(this).val() === "string")
+        $("#input-value-type").find("option[value='continuous']").hide();
+    else
+        $("#input-value-type").find("option[value='continuous']").show();
+}
 
+
+function generateArray(e) {
+    console.log("start");
     let language = $("#input-language").val();
     let datatype = $("#input-datatype").val();
     let arrayLength = parseInt($("#array-length").val());
@@ -33,9 +56,9 @@ function startGeneration(e) {
     let steps = parseInt($("#num-of-steps").val());
     let toClipboard = $("#directly-to-clipboard").is(":checked");
 
-
-    let results = 'let array = ["berlin", "new york", "vienna", "zagreb"];';
-
+    let results = generateStringArray(arrayLength, steps);
+    results = generateLanguageSpecificArrayString(language, results);
+    $("#result-array").val(results);
 
     if (toClipboard) {
         putIntoClipboard(results);
@@ -50,26 +73,60 @@ function startGeneration(e) {
     }
 }
 
-let timeoutId = -1;
 
-function putIntoClipboard(results) {
+
+/****************************************************************************************
+ * Generate an array of random strings with the passed properties
+ * @param {number} length the length of the output array
+ * @param {number} categoriesNumber number of different categories in this array
+ */
+function generateStringArray(length, categoriesNumber) {
+    let base = randomWords(categoriesNumber);
+
+    let resultArray = new Array(length);
+    for(let i = 0; i < resultArray.length; i++) {
+        let randIndex = Math.floor(Math.random() * categoriesNumber)
+        resultArray[i] = '"' + base[randIndex] + '"';
+    }
+    return resultArray;
+}
+
+
+/****************************************************************************************
+ * generates a language specific array of the results array
+ * @param {string} language target programming language
+ * @param {array} results array with entries
+ */
+function generateLanguageSpecificArrayString(language, results) {
+    let res = '';
+    switch (language) {
+        case "javascript" : {
+            res = 'let array = [' + results.join(", ") + ']';
+            break;
+        }
+    }
+    return res;
+}
+
+
+
+/****************************************************************************************
+ * Puts the passed string into the clipboard and shows the toast message
+ * @param {string} text string for clipboard
+ */
+function putIntoClipboard(text) {
     console.log("TODO: put results into clipboard");
     $("#toast-container").show("fade", 100);
-    copyTextToClipboard(results);
-    clearTimeout(timeoutId);
-    timeoutId = setTimeout(function () {
-        timeoutId = $("#toast-container").hide("fade", 1000);
+    copyTextToClipboard(text);
+    clearTimeout(_toastTimeoutId);
+    _toastTimeoutId = setTimeout(function () {
+        _toastTimeoutId = $("#toast-container").hide("fade", 1000);
     }, 2000);
 }
 
 
-function showResults(results) {
-
-}
-
-
-
-/**
+/****************************************************************************************
+ * Puts text into clipboard
  * SOURCE: https://stackoverflow.com/a/30810322;
  * @param {string} text 
  */
