@@ -10,6 +10,7 @@ $(document).ready(function () {
     $("#generate").on("click", generateArray);
     $("#input-value-type").on("change", checkValueType);
     $("#input-datatype").on("change", checkDataType);
+    $("#copy-to-clipboard").on("click", putIntoClipboard);
     $("#close-results").on("click", function () {
         $("#result-container").hide("slide", {
             direction: "up"
@@ -270,14 +271,17 @@ function createLanguageSpecificArrayString(language, results) {
  * Puts the passed string into the clipboard and shows the toast message
  * @param {string} text string for clipboard
  */
-function putIntoClipboard(text) {
+function putIntoClipboard() {
     $("#toast-container").show("fade", 100);
-    // copyTextToClipboard(text);
-
 
     let textArea = $("#result-array")[0];
-    $("#result-container").css("opacity", "0");
-    $("#result-container").show();
+
+    let toggleVisibility = !$("#result-container").is(":visible")
+
+    if (toggleVisibility) {
+        $("#result-container").css("opacity", "0");
+        $("#result-container").show();
+    }
 
     textArea.focus();
     textArea.select();
@@ -288,10 +292,11 @@ function putIntoClipboard(text) {
     } catch (err) {
         showToast(false);
     }
-    $("#result-container").hide();
-    $("#result-container").css("opacity", "1");
 
-
+    if (toggleVisibility) {
+        $("#result-container").hide();
+        $("#result-container").css("opacity", "1");
+    }
 }
 
 
