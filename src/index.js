@@ -48,16 +48,33 @@ function checkDataType(e) {
 }
 
 
+
+/**
+ * starts the generation of the array
+ * @param {object} e click event
+ */
 function generateArray(e) {
     let language = $("#input-language").val();
     let datatype = $("#input-datatype").val();
     let arrayLength = parseInt($("#array-length").val());
     let valueType = $("#input-value-type").val();
-    let steps = parseInt($("#num-of-steps").val());
+    let steps = $("#num-of-steps").is(":visible") ? parseInt($("#num-of-steps").val()) : -1;
     let toClipboard = $("#directly-to-clipboard").is(":checked");
 
-    let results = generateStringArray(arrayLength, steps);
-    results = generateLanguageSpecificArrayString(language, results);
+    console.log("steps: ", steps);
+
+    let results = [];
+
+    switch (datatype) {
+        case "string":
+            results = generateStringArray(arrayLength, steps);
+            break;
+        case "date":
+            results = generateDateArray(arrayLength, steps);
+            break;
+    }
+
+    results = createLanguageSpecificArrayString(language, results);
 
     $("#result-array").val(results);
 
@@ -93,46 +110,98 @@ function generateStringArray(length, categoriesNumber) {
 }
 
 
+/**
+ * Generate an array of random dates with the passed properties
+ * @param {number} length the length of the output array
+ * @param {number} datesNumber number of different dates in this array. If it is -1 then all dates will be random
+ */
+function generateDateArray(length, datesNumber) {
+    let baseDates = [];
+    let startDate = new Date(2015, 0, 1);
+    let endDate = new Date();
+    let resultArray = new Array(length);
+
+    if (datesNumber !== -1) {
+        baseDates = new Array(datesNumber);
+        for (let i = 0; i < baseDates.length; i++)
+            baseDates[i] = randomDate(startDate, endDate);
+
+        for (let i = 0; i < resultArray.length; i++) {
+            let randIndex = Math.floor(Math.random() * datesNumber)
+            resultArray[i] = '"' + baseDates[randIndex].toISOString() + '"';
+        }
+    }
+    else {
+        for (let i = 0; i < resultArray.length; i++) {
+            let date = randomDate(startDate, endDate);
+            resultArray[i] = '"' + date.toISOString() + '"';
+        }
+    }
+
+    return resultArray;
+}
+
+
+/**
+ * SOURCE: https://stackoverflow.com/a/9035732
+ * @param {object} start starting date object
+ * @param {object} end ending date object
+ */
+function randomDate(start, end) {
+    return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
+}
+
+
 /****************************************************************************************
  * generates a language specific array of the results array
  * @param {string} language target programming language
  * @param {array} results array with entries
  */
-function generateLanguageSpecificArrayString(language, results) {
+function createLanguageSpecificArrayString(language, results) {
     let arrayDeclaration = ''
     let brackets = {
         "open": "[",
         "close": "]"
     };
+    let statementEnding = ";";
+
+
     if (language === "cpp" || language === "csharp" || language === "java") {
         brackets["open"] = "{";
         brackets["close"] = "}";
     }
+    if (language === "values") {
+        brackets["open"] = "";
+        brackets["close"] = "";
+    }
 
     switch (language) {
         case "cpp": {
-            arrayDeclaration = 'string array[' + results.length + ']';
+            arrayDeclaration = 'string array[' + results.length + '] = ';
             break;
         }
         case "csharp": {
-            arrayDeclaration = 'string[] array';
+            arrayDeclaration = 'string[] array = ';
             break;
         }
         case "java": {
-            arrayDeclaration = 'String[] array';
+            arrayDeclaration = 'String[] array = ';
             break;
         }
         case "javascript": {
-            arrayDeclaration = 'let array';
+            arrayDeclaration = 'let array = ';
             break;
         }
         case "python": {
-            arrayDeclaration = 'array'
+            arrayDeclaration = 'array = '
             break;
         }
     }
 
-    return res = arrayDeclaration + " = " + brackets.open + results.join(", ") + brackets.close + (language !== "python" ? ";" : "");
+    if(language === "python" || language === "values")
+        statementEnding = "";
+
+    return res = arrayDeclaration + brackets.open + results.join(", ") + brackets.close + statementEnding;
 }
 
 
