@@ -3,9 +3,6 @@ var randomWords = require("random-words"); // https://github.com/punkave/random-
 require("jquery-ui-bundle");
 let _toastTimeoutId = -1;
 
-parent.$ = require("jquery");
-
-
 /**
  * Init the event handlers here
  */
@@ -67,7 +64,6 @@ function generateArray(e) {
     let language = $("#input-language").val();
     let datatype = $("#input-datatype").val();
     let arrayLength = parseInt($("#array-length").val());
-    let valueType = $("#input-value-type").val();
     let steps = $("#num-of-steps").is(":visible") ? parseInt($("#num-of-steps").val()) : -1;
     let toClipboard = $("#directly-to-clipboard").is(":checked");
     let from = parseFloat($("#number-from").val());
@@ -80,7 +76,9 @@ function generateArray(e) {
             results = generateStringArray(arrayLength, steps);
             break;
         case "date":
-            results = generateDateArray(arrayLength, steps);
+            let dateFrom = $("#date-from").val();
+            let dateTo = $("#date-to").val();
+            results = generateDateArray(arrayLength, steps, dateFrom, dateTo);
             break;
         case "integer":
             results = generateNumberArray(arrayLength, steps, true, from, to);
@@ -131,10 +129,10 @@ function generateStringArray(length, numOfDifferentValues) {
  * @param {number} length the length of the output array
  * @param {number} numOfDifferentValues number of different dates in this array. If it is -1 then all dates will be random
  */
-function generateDateArray(length, numOfDifferentValues) {
+function generateDateArray(length, numOfDifferentValues, start, end) {
     let baseDates = [];
-    let startDate = new Date(2015, 0, 1);
-    let endDate = new Date();
+    let startDate = new Date(start);
+    let endDate = new Date(end);
     let resultArray = new Array(length);
 
     if (numOfDifferentValues !== -1) {
