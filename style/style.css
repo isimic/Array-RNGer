@@ -113,6 +113,7 @@ div.content {
 
 #main-container .input-row .btn.btn-primary:hover {
     background-color: #4491C9;
+    border-color: #4491C9;
 }
 
 #toast-container {
@@ -190,6 +191,7 @@ div.content {
 
 #result-container .btn:hover {
     background-color: #4491C9;
+    border-color: #4491C9;
 }
 
 #close-results {
