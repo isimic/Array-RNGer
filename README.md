@@ -1,2 +1,2 @@
 # Array RNGer
-A simple client based web application for generation of array with custom properties
+A simple client based web application for generation of arrays with custom properties
