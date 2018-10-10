@@ -21,11 +21,15 @@
  * SOFTWARE.
  */
 
+// styles
+require("bootstrap/dist/css/bootstrap.min.css")
+require("../style/style.css")
 
-
-var $ = require("jquery");
-var randomWords = require("random-words"); // https://github.com/punkave/random-words
+// scripts
+let $ = require("jquery");
+let randomWords = require("random-words"); // https://github.com/punkave/random-words
 require("jquery-ui-bundle");
+
 let _toastTimeoutId = -1;
 
 /**
